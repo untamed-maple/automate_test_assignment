@@ -53,12 +53,14 @@ public class ParkingFeeCalculator
     ///   9. Total: baseFee + surcharge − discount + overnight + penalty (min 0)
     /// </remarks>
     public ParkingFeeResult CalculateFee(
+        
         VehicleType vehicleType,
         MembershipTier membership,
         DateTime checkIn,
         DateTime checkOut,
         bool isLostTicket = false,
         bool isHoliday = false)
+        
     {   
         var totalMinutes = (checkOut - checkIn).TotalMinutes;
 
@@ -80,13 +82,7 @@ public class ParkingFeeCalculator
     var billableHours = Math.Ceiling((totalMinutes - 30) / 60.0);
 
     // Hourly rate based on vehicle type
-    decimal hourlyRate = vehicleType switch
-    {
-        VehicleType.Motorcycle => 500m,
-        VehicleType.Car => 1000m,
-        VehicleType.SUV => 1500m,
-        _ => throw new ArgumentOutOfRangeException(nameof(vehicleType))
-    };
+    decimal hourlyRate = GetHourlyRate(vehicleType);
 
     // Final fee calculation
     var totalFee = (decimal)billableHours * hourlyRate;
@@ -137,6 +133,15 @@ if (isLostTicket)
 
     };
     }
-    
+    private decimal GetHourlyRate(VehicleType vehicleType)
+{
+    return vehicleType switch
+    {
+        VehicleType.Motorcycle => 500m,
+        VehicleType.Car => 1000m,
+        VehicleType.SUV => 1500m,
+        _ => throw new ArgumentOutOfRangeException(nameof(vehicleType))
+    };
+}
 }
 
