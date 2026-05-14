@@ -17,6 +17,7 @@ public class ParkingFeeCalculatorTests
     [Fact]
     public void CalculateFee_ZeroDuration_ReturnsFree()
     {
+        
         // Arrange
         var checkIn = new DateTime(2026, 3, 16, 10, 0, 0);  // Monday
         var checkOut = checkIn; // same time = 0 duration
@@ -43,6 +44,23 @@ public class ParkingFeeCalculatorTests
 
     #region Daily Cap
     // Test that fees respect maximum daily limits per vehicle type
+    [Fact]
+public void CalculateFee_MotorcycleExceedsDailyCap_ReturnsCappedFee()
+{
+    // Arrange
+    var checkIn = new DateTime(2026, 3, 16, 8, 0, 0);
+    var checkOut = checkIn.AddHours(12);
+
+    // Act
+    var result = _calculator.CalculateFee(
+        VehicleType.Motorcycle,
+        MembershipTier.Guest,
+        checkIn,
+        checkOut);
+
+    // Assert
+    Assert.Equal(4000m, result.TotalFee);
+}
     #endregion
 
     #region Overnight Fee
