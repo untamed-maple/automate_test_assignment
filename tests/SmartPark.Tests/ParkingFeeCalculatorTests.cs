@@ -64,7 +64,23 @@ public void CalculateFee_MotorcycleExceedsDailyCap_ReturnsCappedFee()
     #endregion
 
     #region Overnight Fee
-    // Test the flat fee applied for sessions that extend into late hours
+    [Fact]
+public void CalculateFee_OvernightParking_AddsOvernightFee()
+{
+    // Arrange
+    var checkIn = new DateTime(2026, 3, 16, 20, 0, 0); // 8 PM
+    var checkOut = new DateTime(2026, 3, 16, 23, 0, 0); // 11 PM
+
+    // Act
+    var result = _calculator.CalculateFee(
+        VehicleType.Car,
+        MembershipTier.Guest,
+        checkIn,
+        checkOut);
+
+    // Assert
+    Assert.Equal(5000m, result.TotalFee);
+}
     #endregion
 
     #region Weekend Surcharge
