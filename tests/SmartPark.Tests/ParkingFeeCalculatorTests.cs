@@ -277,6 +277,30 @@ public void CalculateFee_LongerDurationDoesNotReduceFee(
     // Assert
     Assert.True(longerFee.TotalFee >= shorterFee.TotalFee);
 }
+[Property]
+public void CalculateFee_GuestFeeIsNeverLowerThanGoldFee(int parkingMinutes)
+{
+    // Arrange
+    parkingMinutes = Math.Abs(parkingMinutes % 720);
 
+    var checkIn = new DateTime(2026, 3, 16, 10, 0, 0);
+    var checkOut = checkIn.AddMinutes(parkingMinutes);
+
+    // Act
+    var guestFee = _calculator.CalculateFee(
+        VehicleType.Car,
+        MembershipTier.Guest,
+        checkIn,
+        checkOut);
+
+    var goldFee = _calculator.CalculateFee(
+        VehicleType.Car,
+        MembershipTier.Gold,
+        checkIn,
+        checkOut);
+
+    // Assert
+    Assert.True(guestFee.TotalFee >= goldFee.TotalFee);
+}
     #endregion
 }
