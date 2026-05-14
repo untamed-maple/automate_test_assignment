@@ -106,7 +106,14 @@ if (isOvernight)
 {
     totalFee += 2000m;
 }
+bool isWeekend =
+    checkIn.DayOfWeek == DayOfWeek.Saturday ||
+    checkIn.DayOfWeek == DayOfWeek.Sunday;
 
+if (isWeekend)
+{
+    totalFee *= 1.2m;
+}
     return new ParkingFeeResult
     {
         TotalFee = totalFee
