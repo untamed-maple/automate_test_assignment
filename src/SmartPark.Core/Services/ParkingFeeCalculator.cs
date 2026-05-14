@@ -99,6 +99,13 @@ public class ParkingFeeCalculator
 };
 
 totalFee = Math.Min(totalFee, dailyCap);
+bool isOvernight =
+    checkOut.Hour >= 22 || checkOut.Hour < 5;
+
+if (isOvernight)
+{
+    totalFee += 2000m;
+}
 
     return new ParkingFeeResult
     {
