@@ -62,6 +62,24 @@ public void CalculateFee_ThirtyOneMinutes_ChargesOneHour()
     #region Daily Cap
     // Test that fees respect maximum daily limits per vehicle type
     [Fact]
+public void CalculateFee_MotorcycleAtExactDailyCap_Returns4000()
+{
+    // Arrange
+    var checkIn = new DateTime(2026, 3, 16, 8, 0, 0);
+    var checkOut = checkIn.AddHours(8);
+
+    // Act
+    var result = _calculator.CalculateFee(
+        VehicleType.Motorcycle,
+        MembershipTier.Guest,
+        checkIn,
+        checkOut);
+
+    // Assert
+    Assert.Equal(4000m, result.TotalFee);
+}
+    #endregion
+    [Fact]
 public void CalculateFee_MotorcycleExceedsDailyCap_ReturnsCappedFee()
 {
     // Arrange
@@ -78,7 +96,7 @@ public void CalculateFee_MotorcycleExceedsDailyCap_ReturnsCappedFee()
     // Assert
     Assert.Equal(4000m, result.TotalFee);
 }
-    #endregion
+    
 
     #region Overnight Fee
     [Fact]
