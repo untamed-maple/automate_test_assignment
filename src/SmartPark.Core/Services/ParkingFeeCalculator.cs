@@ -59,7 +59,21 @@ public class ParkingFeeCalculator
         DateTime checkOut,
         bool isLostTicket = false,
         bool isHoliday = false)
+    {   
+        var totalMinutes = (checkOut - checkIn).TotalMinutes;
+
+    if (checkOut < checkIn)
     {
+        throw new ArgumentException("Check-out cannot be before check-in.");
+    }
+
+    if (totalMinutes <= 30)
+    {
+        return new ParkingFeeResult
+        {
+            TotalFee = 0
+        };
+    }
         // TODO: Implement the 9-step fee calculation using TDD.
         // Write a failing test first (RED), then implement just enough to pass (GREEN).
         throw new NotImplementedException(
