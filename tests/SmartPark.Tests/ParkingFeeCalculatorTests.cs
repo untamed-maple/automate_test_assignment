@@ -106,6 +106,24 @@ public void CalculateFee_WeekendParking_AddsTwentyPercentSurcharge()
 
     #region Holiday Surcharge
     // Test holiday pricing and its interaction with weekend pricing
+    [Fact]
+public void CalculateFee_HolidayParking_OverridesWeekendSurcharge()
+{
+    // Arrange
+    var checkIn = new DateTime(2026, 3, 14, 10, 0, 0); // Saturday
+    var checkOut = checkIn.AddHours(2);
+
+    // Act
+    var result = _calculator.CalculateFee(
+        VehicleType.Car,
+        MembershipTier.Guest,
+        checkIn,
+        checkOut,
+        isHoliday: true);
+
+    // Assert
+    Assert.Equal(3000m, result.TotalFee);
+}
     #endregion
 
     #region Membership Discounts
