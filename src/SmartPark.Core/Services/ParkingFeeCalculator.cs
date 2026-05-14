@@ -110,7 +110,11 @@ bool isWeekend =
     checkIn.DayOfWeek == DayOfWeek.Saturday ||
     checkIn.DayOfWeek == DayOfWeek.Sunday;
 
-if (isWeekend)
+if (isHoliday)
+{
+    totalFee *= 1.5m;
+}
+else if (isWeekend)
 {
     totalFee *= 1.2m;
 }
