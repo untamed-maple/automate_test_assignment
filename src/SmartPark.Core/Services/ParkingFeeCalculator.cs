@@ -90,6 +90,15 @@ public class ParkingFeeCalculator
 
     // Final fee calculation
     var totalFee = (decimal)billableHours * hourlyRate;
+    decimal dailyCap = vehicleType switch
+{
+    VehicleType.Motorcycle => 4000m,
+    VehicleType.Car => 8000m,
+    VehicleType.SUV => 12000m,
+    _ => throw new ArgumentOutOfRangeException(nameof(vehicleType))
+};
+
+totalFee = Math.Min(totalFee, dailyCap);
 
     return new ParkingFeeResult
     {
