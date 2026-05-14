@@ -228,5 +228,24 @@ public void CalculateFee_CheckOutBeforeCheckIn_ThrowsException()
     #region Property-Based Tests
     // Write at least 5 FsCheck properties that must hold for ALL valid inputs
     // You may need custom Arbitrary<T> for generating valid DateTime pairs
+    [Property]
+public void CalculateFee_FeeIsNeverNegative(int parkingMinutes)
+{
+    // Arrange
+    parkingMinutes = Math.Abs(parkingMinutes % 1440);
+
+    var checkIn = new DateTime(2026, 3, 16, 10, 0, 0);
+    var checkOut = checkIn.AddMinutes(parkingMinutes);
+
+    // Act
+    var result = _calculator.CalculateFee(
+        VehicleType.Car,
+        MembershipTier.Guest,
+        checkIn,
+        checkOut);
+
+    // Assert
+    Assert.True(result.TotalFee >= 0);
+}
     #endregion
 }
