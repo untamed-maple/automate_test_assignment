@@ -118,11 +118,21 @@ else if (isWeekend)
 {
     totalFee *= 1.2m;
 }
+decimal discountMultiplier = membership switch
+{
+    MembershipTier.Silver => 0.9m,
+    MembershipTier.Gold => 0.75m,
+    MembershipTier.Platinum => 0.6m,
+    _ => 1.0m
+};
+
+totalFee *= discountMultiplier;
     return new ParkingFeeResult
     {
         TotalFee = totalFee
 
     };
     }
+    
 }
 
