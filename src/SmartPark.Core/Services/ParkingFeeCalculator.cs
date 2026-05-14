@@ -127,6 +127,10 @@ decimal discountMultiplier = membership switch
 };
 
 totalFee *= discountMultiplier;
+if (isLostTicket)
+{
+    totalFee += 10000m;
+}
     return new ParkingFeeResult
     {
         TotalFee = totalFee
