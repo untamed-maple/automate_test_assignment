@@ -101,7 +101,9 @@ public void CalculateFee_WeekendParking_AddsTwentyPercentSurcharge()
 
     // Assert
     Assert.Equal(2400m, result.TotalFee);
+    
 }
+
     #endregion
 
     #region Holiday Surcharge
@@ -149,6 +151,24 @@ public void CalculateFee_GoldMember_AppliesTwentyFivePercentDiscount()
 
     #region Lost Ticket
     // Test the penalty and how it interacts with other fee modifiers
+    [Fact]
+public void CalculateFee_LostTicket_AddsPenaltyFee()
+{
+    // Arrange
+    var checkIn = new DateTime(2026, 3, 16, 10, 0, 0);
+    var checkOut = checkIn.AddHours(2);
+
+    // Act
+    var result = _calculator.CalculateFee(
+        VehicleType.Car,
+        MembershipTier.Guest,
+        checkIn,
+        checkOut,
+        isLostTicket: true);
+
+    // Assert
+    Assert.Equal(12000m, result.TotalFee);
+}
     #endregion
 
     #region Edge Cases
