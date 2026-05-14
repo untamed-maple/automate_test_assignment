@@ -247,5 +247,36 @@ public void CalculateFee_FeeIsNeverNegative(int parkingMinutes)
     // Assert
     Assert.True(result.TotalFee >= 0);
 }
+[Property]
+public void CalculateFee_LongerDurationDoesNotReduceFee(
+    int firstMinutes,
+    int extraMinutes)
+{
+    // Arrange
+    firstMinutes = Math.Abs(firstMinutes % 720);
+    extraMinutes = Math.Abs(extraMinutes % 720);
+
+    var checkIn = new DateTime(2026, 3, 16, 10, 0, 0);
+
+    var shorterCheckOut = checkIn.AddMinutes(firstMinutes);
+    var longerCheckOut = shorterCheckOut.AddMinutes(extraMinutes);
+
+    // Act
+    var shorterFee = _calculator.CalculateFee(
+        VehicleType.Car,
+        MembershipTier.Guest,
+        checkIn,
+        shorterCheckOut);
+
+    var longerFee = _calculator.CalculateFee(
+        VehicleType.Car,
+        MembershipTier.Guest,
+        checkIn,
+        longerCheckOut);
+
+    // Assert
+    Assert.True(longerFee.TotalFee >= shorterFee.TotalFee);
+}
+
     #endregion
 }
