@@ -76,7 +76,26 @@ public class ParkingFeeCalculator
     }
         // TODO: Implement the 9-step fee calculation using TDD.
         // Write a failing test first (RED), then implement just enough to pass (GREEN).
-        throw new NotImplementedException(
-            "Implement this method using TDD — see the assignment spec for the 9-step calculation flow.");
+       // Calculate billable hours after grace period
+    var billableHours = Math.Ceiling((totalMinutes - 30) / 60.0);
+
+    // Hourly rate based on vehicle type
+    decimal hourlyRate = vehicleType switch
+    {
+        VehicleType.Motorcycle => 500m,
+        VehicleType.Car => 1000m,
+        VehicleType.SUV => 1500m,
+        _ => throw new ArgumentOutOfRangeException(nameof(vehicleType))
+    };
+
+    // Final fee calculation
+    var totalFee = (decimal)billableHours * hourlyRate;
+
+    return new ParkingFeeResult
+    {
+        TotalFee = totalFee
+
+    };
     }
 }
+
