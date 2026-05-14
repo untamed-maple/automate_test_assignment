@@ -128,6 +128,23 @@ public void CalculateFee_HolidayParking_OverridesWeekendSurcharge()
 
     #region Membership Discounts
     // Test discount tiers and what amounts they apply to
+    [Fact]
+public void CalculateFee_GoldMember_AppliesTwentyFivePercentDiscount()
+{
+    // Arrange
+    var checkIn = new DateTime(2026, 3, 16, 10, 0, 0);
+    var checkOut = checkIn.AddHours(2);
+
+    // Act
+    var result = _calculator.CalculateFee(
+        VehicleType.Car,
+        MembershipTier.Gold,
+        checkIn,
+        checkOut);
+
+    // Assert
+    Assert.Equal(1500m, result.TotalFee);
+}
     #endregion
 
     #region Lost Ticket
